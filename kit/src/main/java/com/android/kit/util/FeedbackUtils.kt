@@ -1,12 +1,15 @@
 package com.android.kit.util
 
 import android.content.Context
+import android.content.Context.TELEPHONY_SERVICE
 import android.content.Intent
 import android.content.Intent.*
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
+import android.telephony.TelephonyManager
 import com.android.kit.R
+import java.util.*
 
 object FeedbackUtils {
 
@@ -66,11 +69,7 @@ object FeedbackUtils {
         val model = Build.MODEL // Model
         val brand = Build.BRAND // Product
         var infoString = ""
-        val locale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            context.resources.configuration.locales[0].country
-        } else {
-            context.resources.configuration.locale.country
-        }
+        val locale = getCountryNameWithCode(context)
         try {
             val pInfo =
                 context.packageManager.getPackageInfo(context.packageName, 0)
@@ -80,20 +79,37 @@ object FeedbackUtils {
             e.printStackTrace()
         }
         infoString += "Brand:\t " + brand + " (" + model + ")\n" +
-                "Android API:\t " + sdk// + "\nDevice Type:" + getDeviceType(context)
-        if (locale.isNotEmpty()) {
+                "Android API:\t " + sdk + "\nDevice Type: " + getDeviceType(context)
+        if (!locale.isNullOrEmpty()) {
             infoString += "\nLocale:\t $locale"
         }
         return infoString
     }
 
-//    fun getDeviceType(context: Context): String {
-//        val tabletSize =
-//            context.resources.getBoolean(R.bool.isTablet)
-//        return if (tabletSize) {
-//            "Tablet"
-//        } else {
-//            "Phone"
-//        }
-//    }
+    fun getCountryName(context: Context):String?{
+        return getCountryCode(context)?.let { code ->
+            Locale("", code).displayCountry
+        }
+    }
+
+    fun getCountryNameWithCode(context: Context):String?{
+        return getCountryCode(context)?.let { code ->
+            "${Locale("", code).displayCountry} ($code)"
+        }
+    }
+
+    private fun getCountryCode(context: Context): String? {
+        val telephoneManager = context.getSystemService(TELEPHONY_SERVICE) as TelephonyManager
+        return telephoneManager.networkCountryIso
+    }
+
+    fun getDeviceType(context: Context): String {
+        val tabletSize =
+            context.resources.getBoolean(R.bool.isTablet)
+        return if (tabletSize) {
+            "Tablet"
+        } else {
+            "Phone"
+        }
+    }
 }
