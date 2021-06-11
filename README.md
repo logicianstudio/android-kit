@@ -8,7 +8,7 @@ Latest AndroidKit Version [![](https://jitpack.io/v/logicianstudio/android-kit.s
 For integration, at this point latest version looks like
 
 ```groovy
-implementation 'com.github.infinitechub:android-kit:x.y.z'
+implementation 'com.github.logicianstudio:android-kit:x.y.z'
 ```
 
 ### ActivityKit.kt
