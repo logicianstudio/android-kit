@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="kit_button_height">46dp</dimen>
+    <dimen name="kit_button_radius_full">23dp</dimen>
+
+    <dimen name="space_half_half">2dp</dimen>
+    <dimen name="space_half">4dp</dimen>
+    <dimen name="space">8dp</dimen>
+    <dimen name="space_and_half">12dp</dimen>
+    <dimen name="space_double">16dp</dimen>
+    <dimen name="space_double_and_half">20dp</dimen>
+    <dimen name="space_triple">24dp</dimen>
+    <dimen name="space_triple_and_half">28dp</dimen>
+    <dimen name="space_wide">32dp</dimen>
+    <dimen name="space_extra_wide">48dp</dimen>
+
+    <dimen name="radius_small_x">2dp</dimen>
+    <dimen name="radius_small">4dp</dimen>
+    <dimen name="radius_normal">6dp</dimen>
+    <dimen name="radius_medium">8dp</dimen>
+    <dimen name="radius_large">12dp</dimen>
+    <dimen name="radius_large_x">16dp</dimen>
+
+    <dimen name="text_size_h1">28sp</dimen>
+    <dimen name="text_size_h2">22sp</dimen>
+    <dimen name="text_size_h3">20sp</dimen>
+    <dimen name="text_size_h4">17sp</dimen>
+    <dimen name="text_size_body1">17sp</dimen>
+    <dimen name="text_size_body2">16sp</dimen>
+    <dimen name="text_size_body3">14sp</dimen>
+    <dimen name="text_size_subhead1">15sp</dimen>
+    <dimen name="text_size_subhead2">16sp</dimen>
+    <dimen name="text_size_caption1">12sp</dimen>
+    <dimen name="text_size_caption2">11sp</dimen>
+</resources>

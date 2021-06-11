@@ -1,0 +1,2 @@
+include ':sample', ':kit'
+rootProject.name='AndroidKit'
