@@ -1,7 +1,7 @@
 # AndroidKit
 One Module for all basic need of an android developer
 
-Latest AndroidKit Version [![](https://jitpack.io/v/infinitechub/android-kit.svg)](https://jitpack.io/#infinitechub/android-kit)
+Latest AndroidKit Version [![](https://jitpack.io/v/logicianstudio/android-kit.svg)](https://jitpack.io/#logicianstudio/android-kit)
 
 ## Usage
 
