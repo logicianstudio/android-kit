@@ -1,11 +1,19 @@
 # AndroidKit
-One Module for all basic need of an android developer
-
-Latest AndroidKit Version [![](https://jitpack.io/v/logicianstudio/android-kit.svg)](https://jitpack.io/#logicianstudio/android-kit)
+All boiler-plate at one place for developing an Android Application
 
 ## Usage
+Add it in your root build.gradle at the end of repositories:
+```groovy
+allprojects {
+    repositories {
+        ...
+        maven { url 'https://jitpack.io' }
+    }
+}
+```
 
-For integration, at this point latest version looks like
+
+Add the dependency with latest version code [![](https://jitpack.io/v/logicianstudio/android-kit.svg)](https://jitpack.io/#logicianstudio/android-kit)
 
 ```groovy
 implementation 'com.github.logicianstudio:android-kit:x.y.z'
