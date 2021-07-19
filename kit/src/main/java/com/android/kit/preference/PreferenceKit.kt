@@ -9,7 +9,7 @@ import com.google.gson.Gson
 
 object PreferenceKit {
     private const val PREFERENCE_NAME = "AndroidKit.Preference"
-    private const val NIGHT_MODE = "Pref.NightMode"
+    private const val DARK_MODE = "Pref.DARK_MODE"
 
     private var gson = Gson()
     private lateinit var preference: SharedPreferences
@@ -18,15 +18,14 @@ object PreferenceKit {
         preference = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
     }
 
-    var nightMode: NightMode = NightMode("Off", AppCompatDelegate.MODE_NIGHT_NO)
+    var nightMode: NightMode
         set(value) {
-            field = value
-            set(NIGHT_MODE, gson.toJson(value, NightMode::class.java))
+            set(DARK_MODE, gson.toJson(value, NightMode::class.java))
         }
         get() {
-            val str = getString(NIGHT_MODE)
+            val str = getString(DARK_MODE)
             return if (str == null) {
-                NightMode("Off", AppCompatDelegate.MODE_NIGHT_NO)
+                NightMode.OFF
             } else {
                 gson.fromJson(str, NightMode::class.java)
             }

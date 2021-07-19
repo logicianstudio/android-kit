@@ -32,7 +32,8 @@ object FileUtils {
     }
 
     private fun getAppDirPath(context: Context): String {
-        return Environment.getExternalStorageDirectory().toString() + File.separator + context.appName
+        return Environment.getExternalStorageDirectory()
+            .toString() + File.separator + context.appName
     }
 
     fun getAppDir(context: Context): File? {
@@ -814,26 +815,35 @@ object FileUtils {
     fun readJsonFromAppDir(
         context: Context,
         folderName: String,
-        fileName: String?
+        fileName: String
     ): JSONObject? {
-        val directory =
-            getFolderInAppDir(context, folderName)
-        return readJson(directory, fileName)
+        return getFolderInAppDir(context, folderName)?.let { directory ->
+            readJson(directory, fileName)
+        } ?: kotlin.run {
+            null
+        }
     }
 
-    fun readJson(directory: File?, fileName: String?): JSONObject? {
+    fun readJson(directory: File, fileName: String): JSONObject? {
+        createOrExistsDir(directory)
+        val file = File(directory, fileName)
+        return readJson(file)
+    }
+
+    fun readJson(file: File): JSONObject? {
+        return JSONObject(readJsonString(file))
+    }
+
+    fun readJsonString(file: File): String? {
         return try {
-            createOrExistsDir(directory)
-            val file = File(directory, fileName)
             createOrExistsFile(file)
             //check whether file exists
-            val `is` = FileInputStream(file)
-            val size = `is`.available()
+            val inputStream = FileInputStream(file)
+            val size = inputStream.available()
             val buffer = ByteArray(size)
-            `is`.read(buffer)
-            `is`.close()
-            val jsonString = String(buffer)
-            JSONObject(jsonString)
+            inputStream.read(buffer)
+            inputStream.close()
+            String(buffer)
         } catch (e: IOException) {
             Log.e("TAG", "Error in Reading: " + e.localizedMessage)
             null
