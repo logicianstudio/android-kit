@@ -3,6 +3,8 @@ package com.android.kit.ui.recyclerview
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
+import com.android.kit.listener.DataEventListener
+import com.android.kit.listener.ItemClickListener
 
 /**
  * A generic RecyclerView adapter
@@ -13,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 abstract class DataBoundRecyclerAdapter<T, V : ViewDataBinding>() :
     RecyclerView.Adapter<DataBoundViewHolder<V>>() {
 
+    private var simpleItemClickListener: ItemClickListener<T>? = null
     open var data: MutableList<T> = mutableListOf()
         set(value) {
             field = value
@@ -58,7 +61,11 @@ abstract class DataBoundRecyclerAdapter<T, V : ViewDataBinding>() :
     override fun getItemCount() = data.size
 
     override fun onBindViewHolder(holder: DataBoundViewHolder<V>, position: Int) {
-        bind(holder.binding, data[position], position)
+        val item = data[position]
+        holder.binding.root.setOnClickListener {
+            simpleItemClickListener?.invoke(item, position, it)
+        }
+        bind(holder.binding, item, position)
         holder.binding.executePendingBindings()
     }
 
@@ -67,6 +74,22 @@ abstract class DataBoundRecyclerAdapter<T, V : ViewDataBinding>() :
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         this.recyclerView = recyclerView
         super.onAttachedToRecyclerView(recyclerView)
+    }
+
+    fun getItem(position: Int) = data[position]
+
+    fun notifyItemDataChanged(item: T) {
+        notifyItemChanged(data.indexOf(item))
+    }
+
+    fun notifyItemRemoved(item: T) {
+        val index = data.indexOf(item)
+        data.remove(item)
+        notifyItemRemoved(index)
+    }
+
+    fun setOnItemClickListener(event: ItemClickListener<T>){
+        simpleItemClickListener = event
     }
 
     protected fun smoothScrollToPosition(position: Int, record: Boolean = false) {
