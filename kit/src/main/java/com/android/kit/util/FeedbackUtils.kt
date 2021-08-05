@@ -98,7 +98,7 @@ object FeedbackUtils {
         }
     }
 
-    private fun getCountryCode(context: Context): String? {
+    fun getCountryCode(context: Context): String? {
         val telephoneManager = context.getSystemService(TELEPHONY_SERVICE) as TelephonyManager
         return telephoneManager.networkCountryIso
     }
