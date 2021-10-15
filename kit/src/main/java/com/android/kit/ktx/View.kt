@@ -22,16 +22,14 @@ fun View.setDimensionRatio(ratio: String, animate: Boolean = false) {
     if (parent is ConstraintLayout) {
         val constraintLayout = parent as ConstraintLayout
 
-        val cs1 = ConstraintSet()
-        cs1.clone(constraintLayout)
-        val cs2 = ConstraintSet()
-        cs2.clone(constraintLayout)
-        cs2.setDimensionRatio(id, ratio)
+        val set = ConstraintSet()
+        set.clone(constraintLayout)
+        set.setDimensionRatio(id, ratio)
 
         if (animate) {
             TransitionManager.beginDelayedTransition(constraintLayout)
         }
-        cs2.applyTo(constraintLayout)
+        set.applyTo(constraintLayout)
 
 //        val lp = layoutParams as ConstraintLayout.LayoutParams
 //        layoutParams = lp.apply { dimensionRatio = ratio }

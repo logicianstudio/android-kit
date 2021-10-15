@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.WindowManager
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.ColorRes
@@ -31,6 +32,8 @@ abstract class ActivityKit<Binding : ViewDataBinding> : AppCompatActivity() {
         ActivityResultContracts.RequestMultiplePermissions()
     )
 
+    open val blockScreenShot = false
+
     private var _binding: Binding? = null
     protected val binding: Binding
         get() = _binding!!
@@ -44,6 +47,13 @@ abstract class ActivityKit<Binding : ViewDataBinding> : AppCompatActivity() {
         val mode = PreferenceKit.nightMode
         AppCompatDelegate.setDefaultNightMode(mode.mode)
         super.onCreate(savedInstanceState)
+
+        if (blockScreenShot) {
+            window.setFlags(
+                WindowManager.LayoutParams.FLAG_SECURE,
+                WindowManager.LayoutParams.FLAG_SECURE
+            )
+        }
         setContentView(binding.root)
     }
 
