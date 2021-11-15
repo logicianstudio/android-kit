@@ -12,37 +12,30 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import com.android.kit.contract.ResultContractor
-
 abstract class FragmentKit<Binding : ViewDataBinding> : Fragment() {
 
-    private var _binding: Binding? = null
-    protected val binding: Binding
-        get() = _binding!!
+    protected lateinit var binding: Binding
 
-    private val contractForResult = ResultContractor.registerActivityForResult(this)
-    private val contractForPermission = ResultContractor.registerForActivityResult(
-        this,
-        ActivityResultContracts.RequestPermission()
-    )
-    private val contractForMultiplePermissions = ResultContractor.registerForActivityResult(
-        this,
-        ActivityResultContracts.RequestMultiplePermissions()
-    )
+    private lateinit var contractForResult: ResultContractor<Intent, ActivityResult>
+    private lateinit var contractForPermission: ResultContractor<String, Boolean>
+    private lateinit var contractForMultiplePermissions: ResultContractor<Array<String>, Map<String, Boolean>>
 
     abstract fun onCreateBinding(inflater: LayoutInflater, container: ViewGroup?): Binding
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        contractForResult = ResultContractor.registerActivityForResult(this)
+        contractForPermission = ResultContractor.registerForActivityResult(this, ActivityResultContracts.RequestPermission())
+        contractForMultiplePermissions = ResultContractor.registerForActivityResult(this, ActivityResultContracts.RequestMultiplePermissions())
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = onCreateBinding(layoutInflater, container)
-        return _binding!!.root
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
+        binding = onCreateBinding(layoutInflater, container)
+        return binding.root
     }
 
     protected fun launchForResult(intent: Intent, result: (result: ActivityResult) -> Unit) {
@@ -55,16 +48,14 @@ abstract class FragmentKit<Binding : ViewDataBinding> : Fragment() {
 
     protected fun requestPermission(
         permissions: Array<String>,
-        result: (resultMap: MutableMap<String, Boolean>) -> Unit
+        result: (resultMap: Map<String, Boolean>) -> Unit
     ) {
         contractForMultiplePermissions.launch(permissions) { result(it) }
     }
 
     fun replaceFragment(containerId: Int, fragment: Fragment, allowStateLoss: Boolean = false) {
-        activity?.let {
-            childFragmentManager.commit(allowStateLoss) {
-                replace(containerId, fragment)
-            }
+        childFragmentManager.commit(allowStateLoss) {
+            replace(containerId, fragment)
         }
     }
 }

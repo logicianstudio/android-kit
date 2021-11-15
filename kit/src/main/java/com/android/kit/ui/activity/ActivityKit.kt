@@ -22,28 +22,24 @@ import com.android.kit.ui.utility.FilterHelper
 
 abstract class ActivityKit<Binding : ViewDataBinding> : AppCompatActivity() {
 
-    private val contractForResult = ResultContractor.registerActivityForResult(this)
-    private val contractForPermission = ResultContractor.registerForActivityResult(
-        this,
-        ActivityResultContracts.RequestPermission()
-    )
-    private val contractForMultiplePermissions = ResultContractor.registerForActivityResult(
-        this,
-        ActivityResultContracts.RequestMultiplePermissions()
-    )
+    private lateinit var contractForResult: ResultContractor<Intent, ActivityResult>
+    private lateinit var contractForPermission: ResultContractor<String, Boolean>
+    private lateinit var contractForMultiplePermissions: ResultContractor<Array<String>, Map<String, Boolean>>
 
     open val blockScreenShot = false
 
-    private var _binding: Binding? = null
-    protected val binding: Binding
-        get() = _binding!!
+    protected lateinit var binding: Binding
 
     abstract fun onCreateBinding(): Binding
 
     private var backClickListener: EventListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        _binding = onCreateBinding()
+        contractForResult = ResultContractor.registerActivityForResult(this)
+        contractForPermission = ResultContractor.registerForActivityResult(this, ActivityResultContracts.RequestPermission())
+        contractForMultiplePermissions = ResultContractor.registerForActivityResult(this, ActivityResultContracts.RequestMultiplePermissions())
+
+        binding = onCreateBinding()
         val mode = PreferenceKit.nightMode
         AppCompatDelegate.setDefaultNightMode(mode.mode)
         super.onCreate(savedInstanceState)
@@ -96,11 +92,6 @@ abstract class ActivityKit<Binding : ViewDataBinding> : AppCompatActivity() {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
-    }
-
     protected fun finish(resultCode: Int) {
         setResult(resultCode)
         finish()
@@ -121,7 +112,7 @@ abstract class ActivityKit<Binding : ViewDataBinding> : AppCompatActivity() {
 
     protected fun requestPermission(
         permissions: Array<String>,
-        result: (resultMap: MutableMap<String, Boolean>) -> Unit
+        result: (resultMap: Map<String, Boolean>) -> Unit
     ) {
         contractForMultiplePermissions.launch(permissions) { result(it) }
     }
