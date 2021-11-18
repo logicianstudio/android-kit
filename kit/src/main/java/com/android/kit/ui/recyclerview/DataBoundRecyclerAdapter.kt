@@ -3,16 +3,16 @@ package com.android.kit.ui.recyclerview
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
-import com.android.kit.listener.DataEventListener
+import androidx.viewbinding.ViewBinding
 import com.android.kit.listener.ItemClickListener
 
 /**
  * A generic RecyclerView adapter
  *
  * @param <T> Type of the items in the list
- * @param <V> The type of the ViewDataBinding
+ * @param <V> The type of the ViewBinding
 </V></T> */
-abstract class DataBoundRecyclerAdapter<T, V : ViewDataBinding>() :
+abstract class DataBoundRecyclerAdapter<T, V : ViewBinding>() :
     RecyclerView.Adapter<DataBoundViewHolder<V>>() {
 
     private var simpleItemClickListener: ItemClickListener<T>? = null
@@ -66,7 +66,7 @@ abstract class DataBoundRecyclerAdapter<T, V : ViewDataBinding>() :
             simpleItemClickListener?.invoke(item, position, it)
         }
         bind(holder.binding, item, position)
-        holder.binding.executePendingBindings()
+        (holder.binding as? ViewDataBinding)?.executePendingBindings()
     }
 
     protected abstract fun bind(binding: V, item: T, position: Int)

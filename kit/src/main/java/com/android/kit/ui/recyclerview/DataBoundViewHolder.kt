@@ -16,12 +16,12 @@
 
 package com.android.kit.ui.recyclerview
 
-import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewbinding.ViewBinding
 
 /**
- * A generic ViewHolder that works with a [ViewDataBinding].
+ * A generic ViewHolder that works with a [ViewBinding].
  * @param <T> The type of the ViewDataBinding.
 </T> */
-class DataBoundViewHolder<out T : ViewDataBinding> constructor(val binding: T) :
+class DataBoundViewHolder<out T : ViewBinding> constructor(val binding: T) :
     RecyclerView.ViewHolder(binding.root)

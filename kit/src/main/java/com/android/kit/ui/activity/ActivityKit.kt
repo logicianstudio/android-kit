@@ -11,16 +11,16 @@ import androidx.annotation.ColorRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
-import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
+import androidx.viewbinding.ViewBinding
 import com.android.kit.contract.ResultContractor
 import com.android.kit.listener.EventListener
 import com.android.kit.model.NightMode
 import com.android.kit.preference.PreferenceKit
 import com.android.kit.ui.utility.FilterHelper
 
-abstract class ActivityKit<Binding : ViewDataBinding> : AppCompatActivity() {
+abstract class ActivityKit<Binding : ViewBinding> : AppCompatActivity() {
 
     private lateinit var contractForResult: ResultContractor<Intent, ActivityResult>
     private lateinit var contractForPermission: ResultContractor<String, Boolean>
@@ -31,6 +31,10 @@ abstract class ActivityKit<Binding : ViewDataBinding> : AppCompatActivity() {
     protected lateinit var binding: Binding
 
     abstract fun onCreateBinding(): Binding
+
+    open fun onBindView(binding: Binding){
+
+    }
 
     private var backClickListener: EventListener? = null
 
@@ -51,6 +55,7 @@ abstract class ActivityKit<Binding : ViewDataBinding> : AppCompatActivity() {
             )
         }
         setContentView(binding.root)
+        onBindView(binding)
     }
 
     fun enableBackButton(backClickListener: EventListener? = null) {
