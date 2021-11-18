@@ -15,12 +15,16 @@ class MainActivity : ActivityKit<ActivityMainBinding>() {
         super.onCreate(savedInstanceState)
         binding.textView.text = "$screenRatio"
 
-        requestPermission(READ_EXTERNAL_STORAGE){ isGranted ->
-            // code here
+        requestPermission(READ_EXTERNAL_STORAGE) { isGranted ->
+            if (isGranted) {
+                // code here
+            }
         }
 
-        requestPermission(arrayOf(READ_EXTERNAL_STORAGE, CAMERA)){ grantMap ->
-            // code here
+        requestPermission(arrayOf(READ_EXTERNAL_STORAGE, CAMERA)) { grantMap ->
+            if (grantMap.all { it.value }) { // all permissions granted
+                // code here
+            }
         }
     }
 

@@ -42,7 +42,7 @@ object FeedbackUtils {
             val version = pInfo.versionName
             val name = getApplicationName(context)
             val plateForm = "Android"
-            //            Toast.makeText(context, "nameversion"+name+version, Toast.LENGTH_SHORT).show();
+            //            Toast.makeText(context, "nameVersion"+name+version, Toast.LENGTH_SHORT).show();
             return "Support: $name - $version ($plateForm)"
         } catch (e: PackageManager.NameNotFoundException) {
             e.printStackTrace()

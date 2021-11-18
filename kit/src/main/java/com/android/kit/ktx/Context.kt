@@ -6,10 +6,13 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
 import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.net.Uri
+import android.os.Build
 import android.provider.Settings
 import androidx.core.content.FileProvider
 import androidx.core.net.toUri
+import com.android.kit.BuildConfig
 import com.android.kit.util.MathUtils
 import java.io.File
 
@@ -41,8 +44,26 @@ fun Context.startActivity(mClass: Class<*>) {
 
 fun Context.isOnline(): Boolean {
     val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-    val netInfo = connectivityManager.activeNetworkInfo
-    return netInfo != null && netInfo.isConnected
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+            ?.let { capabilities ->
+                when {
+                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
+                    else -> false
+                }
+            } ?: false
+    } else {
+        try {
+            connectivityManager.activeNetworkInfo?.isConnected == true
+        } catch (e: Exception) {
+            if (BuildConfig.DEBUG) {
+                e.printStackTrace()
+            }
+            false
+        }
+    }
 }
 
 fun Context.share(file: File, type: String, message: String? = null) {
