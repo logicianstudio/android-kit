@@ -28,7 +28,7 @@ fun Context.openStore() {
         startActivity(
             Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageName"))
         )
-    } catch (anfe: ActivityNotFoundException) {
+    } catch (activityNotFoundException: ActivityNotFoundException) {
         startActivity(
             Intent(
                 Intent.ACTION_VIEW,
@@ -42,7 +42,7 @@ fun Context.startActivity(mClass: Class<*>) {
     startActivity(Intent(this, mClass))
 }
 
-fun Context.isOnline(): Boolean {
+fun Context.isNetworkConnected(): Boolean {
     val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
         connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)

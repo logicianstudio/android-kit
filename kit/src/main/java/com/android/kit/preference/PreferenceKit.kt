@@ -37,15 +37,27 @@ object PreferenceKit {
         }
     }
 
-    fun set(key: String, value: String, commit: Boolean = true) {
+    fun set(key: String, value: Float, commit: Boolean = true) {
         preference.edit(commit) {
-            putString(key, value)
+            putFloat(key, value)
         }
     }
 
     fun set(key: String, value: Long, commit: Boolean = true) {
         preference.edit(commit) {
             putLong(key, value)
+        }
+    }
+
+    fun set(key: String, value: String, commit: Boolean = true) {
+        preference.edit(commit) {
+            putString(key, value)
+        }
+    }
+
+    fun set(key: String, value: MutableSet<String>, commit: Boolean = true) {
+        preference.edit(commit) {
+            putStringSet(key, value)
         }
     }
 
@@ -65,15 +77,27 @@ object PreferenceKit {
         return preference.contains(key)
     }
 
-    fun getString(key: String): String? {
-        return preference.getString(key, null)
-    }
-
     fun getInt(key: String): Int {
         return preference.getInt(key, 0)
     }
 
     fun getLong(key: String): Long {
         return preference.getLong(key, 0)
+    }
+
+    fun getFloat(key: String, defValue: Float = 0f): Float {
+        return preference.getFloat(key, defValue)
+    }
+
+    fun getBoolean(key: String, defValue: Boolean = false): Boolean {
+        return preference.getBoolean(key, defValue)
+    }
+
+    fun getString(key: String): String? {
+        return preference.getString(key, null)
+    }
+
+    fun getStringSet(key: String): MutableSet<String>? {
+        return preference.getStringSet(key, null)
     }
 }

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="KitImageView">
+        <attr name="imageUrl" format="string" />
+        <attr name="placeholderSrc" format="reference" />
+        <attr name="errorSrc" format="reference" />
+    </declare-styleable>
+</resources>

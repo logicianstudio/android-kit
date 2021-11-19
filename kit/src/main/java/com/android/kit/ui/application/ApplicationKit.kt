@@ -1,7 +1,9 @@
 package com.android.kit.ui.application
 
 import android.app.Application
+import com.android.kit.BuildConfig
 import com.android.kit.preference.PreferenceKit
+import com.squareup.picasso.Picasso
 
 abstract class ApplicationKit : Application() {
 
@@ -13,6 +15,13 @@ abstract class ApplicationKit : Application() {
         super.onCreate()
         instance = this
         PreferenceKit.init(this)
+
+        if (BuildConfig.DEBUG) {
+            with(Picasso.get()) {
+                isLoggingEnabled = true
+                setIndicatorsEnabled(true)
+            }
+        }
     }
 
 }
