@@ -1,5 +1,7 @@
 package com.android.kit.viewmodel
 
+import android.os.Handler
+import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,6 +11,8 @@ import com.android.kit.viewmodel.model.LoadingUiState
 import kotlinx.coroutines.*
 
 abstract class KitViewModel : ViewModel() {
+
+    private val handler = Handler(Looper.getMainLooper())
     private val _state = MutableLiveData<UiState>()
     val state: LiveData<UiState> get() = _state
 
@@ -19,16 +23,27 @@ abstract class KitViewModel : ViewModel() {
     }
 
     protected fun emitLoading(isLoading: Boolean) {
-        emitUIState(LoadingUiState(isLoading = isLoading))
+        if (isLoading) {
+            handler.removeCallbacksAndMessages(null)
+            emitUIState(LoadingUiState(isLoading = isLoading))
+        } else {
+            handler.postDelayed({
+                emitUIState(LoadingUiState(isLoading = isLoading))
+            }, 700)
+        }
     }
 
     protected fun emitError(exception: Exception) {
-        emitLoading( isLoading = false)
+        emitLoading(isLoading = false)
         emitUIState(ExceptionUiState(exception = exception))
     }
 
+    protected fun emitError(message: String) {
+        emitError(ExceptionUiState(message = message))
+    }
+
     protected open val exceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
-        emitError(Exception(throwable))
+        emitError(Exception(throwable.message))
     }
 
 }
