@@ -1,5 +1,5 @@
 package com.android.kit.sample
 
-import com.android.kit.ui.application.ApplicationKit
+import com.android.kit.ui.application.KitApplication
 
-class Application: ApplicationKit()
+class Application: KitApplication()

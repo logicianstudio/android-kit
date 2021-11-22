@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.viewbinding.ViewBinding
 import com.android.kit.contract.ResultContractor
-abstract class FragmentKit<Binding : ViewBinding> : Fragment() {
+abstract class KitFragment<Binding : ViewBinding> : Fragment() {
 
 
     private var _binding: Binding? = null

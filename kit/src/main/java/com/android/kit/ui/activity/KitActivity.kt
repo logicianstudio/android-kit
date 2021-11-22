@@ -17,10 +17,10 @@ import androidx.viewbinding.ViewBinding
 import com.android.kit.contract.ResultContractor
 import com.android.kit.listener.EventListener
 import com.android.kit.model.NightMode
-import com.android.kit.preference.PreferenceKit
+import com.android.kit.preference.KitPreference
 import com.android.kit.ui.utility.FilterHelper
 
-abstract class ActivityKit<Binding : ViewBinding> : AppCompatActivity() {
+abstract class KitActivity<Binding : ViewBinding> : AppCompatActivity() {
 
     private lateinit var contractForResult: ResultContractor<Intent, ActivityResult>
     private lateinit var contractForPermission: ResultContractor<String, Boolean>
@@ -44,7 +44,7 @@ abstract class ActivityKit<Binding : ViewBinding> : AppCompatActivity() {
         contractForMultiplePermissions = ResultContractor.registerForActivityResult(this, ActivityResultContracts.RequestMultiplePermissions())
 
         binding = onCreateBinding()
-        val mode = PreferenceKit.nightMode
+        val mode = KitPreference.nightMode
         AppCompatDelegate.setDefaultNightMode(mode.mode)
         super.onCreate(savedInstanceState)
 
@@ -134,7 +134,7 @@ abstract class ActivityKit<Binding : ViewBinding> : AppCompatActivity() {
     }
 
     protected fun setNightMode(nightMode: NightMode) {
-        PreferenceKit.nightMode = nightMode
+        KitPreference.nightMode = nightMode
         AppCompatDelegate.setDefaultNightMode(nightMode.mode)
     }
 }

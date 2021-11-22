@@ -5,9 +5,9 @@ import android.Manifest.permission.READ_EXTERNAL_STORAGE
 import android.os.Bundle
 import com.android.kit.ktx.screenRatio
 import com.android.kit.sample.databinding.ActivityMainBinding
-import com.android.kit.ui.activity.ActivityKit
+import com.android.kit.ui.activity.KitActivity
 
-class MainActivity : ActivityKit<ActivityMainBinding>() {
+class MainActivity : KitActivity<ActivityMainBinding>() {
 
     override fun onCreateBinding() = ActivityMainBinding.inflate(layoutInflater)
 

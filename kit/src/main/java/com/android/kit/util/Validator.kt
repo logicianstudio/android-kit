@@ -17,7 +17,6 @@ object Validator {
         minLength: Int = 6
     ): Boolean {
         val pattern: Pattern
-        val matcher: Matcher
         if (strength == NONE) return password.length >= minLength
         val regex = when (strength) {
             STRONG -> {
@@ -31,7 +30,7 @@ object Validator {
             }
         }
         pattern = Pattern.compile(regex)
-        matcher = pattern.matcher(password)
+        val matcher: Matcher = pattern.matcher(password)
         return matcher.matches()
     }
 

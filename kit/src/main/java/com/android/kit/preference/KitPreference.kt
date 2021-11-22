@@ -7,7 +7,7 @@ import androidx.core.content.edit
 import com.android.kit.model.NightMode
 import com.google.gson.Gson
 
-object PreferenceKit {
+object KitPreference {
     private const val PREFERENCE_NAME = "AndroidKit.Preference"
     private const val DARK_MODE = "Pref.DARK_MODE"
 
