@@ -29,7 +29,14 @@ abstract class KitViewModel : ViewModel() {
         } else {
             handler.postDelayed({
                 emitUIState(LoadingUiState(isLoading = isLoading))
-            }, 700)
+            }, 500)
+        }
+    }
+
+    protected fun emitError(throwable: Throwable) {
+        emitLoading(isLoading = false)
+        (throwable as? Exception)?.let { exception ->
+            emitUIState(ExceptionUiState(exception = exception))
         }
     }
 
@@ -39,11 +46,11 @@ abstract class KitViewModel : ViewModel() {
     }
 
     protected fun emitError(message: String) {
-        emitError(ExceptionUiState(message = message))
+        emitError(Exception(message))
     }
 
     protected open val exceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
-        emitError(Exception(throwable.message))
+        emitError(throwable)
     }
 
 }

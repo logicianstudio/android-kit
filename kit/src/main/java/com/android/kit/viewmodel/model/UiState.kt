@@ -6,8 +6,6 @@ class LoadingUiState(val isLoading: Boolean) : UiState
 
 open class SuccessUiState<T>(val data: T? = null) : UiState
 
-class ExceptionUiState(exception: Exception) : Exception(exception.message), UiState {
+class ExceptionUiState(val exception: Exception) : UiState {
     constructor(message: String) : this(Exception(message))
 }
-
-
