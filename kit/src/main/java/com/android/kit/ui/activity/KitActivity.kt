@@ -32,7 +32,7 @@ abstract class KitActivity<Binding : ViewBinding> : AppCompatActivity() {
 
     abstract fun onCreateBinding(): Binding
 
-    open fun onBindView(binding: Binding){
+    open fun onBindView(binding: Binding) {
 
     }
 
@@ -40,20 +40,27 @@ abstract class KitActivity<Binding : ViewBinding> : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         contractForResult = ResultContractor.registerActivityForResult(this)
-        contractForPermission = ResultContractor.registerForActivityResult(this, ActivityResultContracts.RequestPermission())
-        contractForMultiplePermissions = ResultContractor.registerForActivityResult(this, ActivityResultContracts.RequestMultiplePermissions())
+        contractForPermission = ResultContractor.registerForActivityResult(
+            this,
+            ActivityResultContracts.RequestPermission()
+        )
+        contractForMultiplePermissions = ResultContractor.registerForActivityResult(
+            this,
+            ActivityResultContracts.RequestMultiplePermissions()
+        )
 
-        binding = onCreateBinding()
         val mode = KitPreference.nightMode
         AppCompatDelegate.setDefaultNightMode(mode.mode)
         super.onCreate(savedInstanceState)
 
+        binding = onCreateBinding()
         if (blockScreenShot) {
             window.setFlags(
                 WindowManager.LayoutParams.FLAG_SECURE,
                 WindowManager.LayoutParams.FLAG_SECURE
             )
         }
+
         setContentView(binding.root)
         onBindView(binding)
     }
@@ -69,14 +76,7 @@ abstract class KitActivity<Binding : ViewBinding> : AppCompatActivity() {
         // as you specify a parent activity in AndroidManifest.xml.
         when (item.itemId) {
             android.R.id.home -> {
-                backClickListener?.let { it() } ?: run {
-                    try {
-                        onBackPressed()
-                    } catch (ex: Exception) {
-                        ex.printStackTrace()
-                        finish()
-                    }
-                }
+                backClickListener?.let { it() }
             }
             else -> {
             }

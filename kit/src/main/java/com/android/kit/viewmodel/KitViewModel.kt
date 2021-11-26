@@ -26,7 +26,7 @@ abstract class KitViewModel : ViewModel() {
         if (isLoading) {
             handler.removeCallbacksAndMessages(null)
             emitUIState(LoadingUiState(isLoading = isLoading))
-        } else {
+        } else if((state.value as? LoadingUiState)?.isLoading == true) { // hide only if loading was shown previously
             handler.postDelayed({
                 emitUIState(LoadingUiState(isLoading = isLoading))
             }, 500)

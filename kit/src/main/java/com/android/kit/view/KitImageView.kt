@@ -45,6 +45,7 @@ class KitImageView @JvmOverloads constructor(
                     R.drawable.transparent_placeholder
                 )
                 imageUrl = getString(R.styleable.KitImageView_imageUrl)
+                setImageResource(placeholderImageRes)
             } catch (ex: Exception) {
                 ex.printStackTrace()
             } finally {
