@@ -56,7 +56,7 @@ dependencies {
     implementation "com.android.billingclient:billing-ktx:4.0.0"
 
     // Live Event
-    implementation "com.github.hadilq.liveevent:liveevent:1.2.0"
+    api "com.github.hadilq.liveevent:liveevent:1.2.0"
 
     // Image
     implementation 'com.squareup.picasso:picasso:2.71828'
