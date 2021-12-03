@@ -2,7 +2,7 @@ package com.android.kit.viewmodel.model
 
 interface UiState
 
-class LoadingUiState(val isLoading: Boolean) : UiState
+class LoadingUiState(val isLoading: Boolean, val message: String? = null) : UiState
 
 open class SuccessUiState<T>(val data: T? = null) : UiState
 

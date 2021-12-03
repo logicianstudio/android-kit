@@ -25,13 +25,13 @@ abstract class DataBoundRecyclerAdapter<T, V : ViewBinding>() :
     fun updateItem(position: Int, item: T) {
         if (position > 0 && position < data.size) {
             data[position] = item
-            notifyDataSetChanged()
+            notifyItemChanged(position)
         }
     }
 
     fun appendData(data: List<T>) {
         this.data.addAll(data)
-        notifyDataSetChanged()
+        notifyItemInserted(data.size-1)
     }
 
     fun clear() {

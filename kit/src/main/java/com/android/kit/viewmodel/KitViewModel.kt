@@ -8,15 +8,22 @@ import androidx.lifecycle.ViewModel
 import com.android.kit.viewmodel.model.UiState
 import com.android.kit.viewmodel.model.ExceptionUiState
 import com.android.kit.viewmodel.model.LoadingUiState
+import com.android.kit.viewmodel.model.SuccessUiState
+import com.hadilq.liveevent.LiveEvent
 import kotlinx.coroutines.*
 
 abstract class KitViewModel : ViewModel() {
 
     private val handler = Handler(Looper.getMainLooper())
-    private val _state = MutableLiveData<UiState>()
+    private val _state = LiveEvent<UiState>()
     val state: LiveData<UiState> get() = _state
 
     var job: Job? = null
+
+    fun <T> emitSuccess(data: T) {
+        emitLoading(false)
+        _state.postValue(SuccessUiState(data))
+    }
 
     protected fun emitUIState(state: UiState) {
         _state.postValue(state)
@@ -26,7 +33,7 @@ abstract class KitViewModel : ViewModel() {
         if (isLoading) {
             handler.removeCallbacksAndMessages(null)
             emitUIState(LoadingUiState(isLoading = isLoading))
-        } else if((state.value as? LoadingUiState)?.isLoading == true) { // hide only if loading was shown previously
+        } else if ((state.value as? LoadingUiState)?.isLoading == true) { // hide only if loading was shown previously
             handler.postDelayed({
                 emitUIState(LoadingUiState(isLoading = isLoading))
             }, 500)
