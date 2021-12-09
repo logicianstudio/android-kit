@@ -15,6 +15,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.viewbinding.ViewBinding
 import com.android.kit.contract.ResultContractor
+import com.android.kit.ktx.LifecycleAwareLazy
+import com.android.kit.ktx.lifecycleAwareLazy
 import com.android.kit.listener.EventListener
 import com.android.kit.model.NightMode
 import com.android.kit.preference.KitPreference
@@ -28,7 +30,9 @@ abstract class KitActivity<Binding : ViewBinding> : AppCompatActivity() {
 
     open val blockScreenShot = false
 
-    protected lateinit var binding: Binding
+    val binding by lifecycleAwareLazy {
+        onCreateBinding()
+    }
 
     abstract fun onCreateBinding(): Binding
 
@@ -36,6 +40,7 @@ abstract class KitActivity<Binding : ViewBinding> : AppCompatActivity() {
 
     }
 
+    private var isBackButtonEnabled = false
     private var backClickListener: EventListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,7 +58,6 @@ abstract class KitActivity<Binding : ViewBinding> : AppCompatActivity() {
         AppCompatDelegate.setDefaultNightMode(mode.mode)
         super.onCreate(savedInstanceState)
 
-        binding = onCreateBinding()
         if (blockScreenShot) {
             window.setFlags(
                 WindowManager.LayoutParams.FLAG_SECURE,
@@ -66,6 +70,7 @@ abstract class KitActivity<Binding : ViewBinding> : AppCompatActivity() {
     }
 
     fun enableBackButton(backClickListener: EventListener? = null) {
+        isBackButtonEnabled = true
         this.backClickListener = backClickListener
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
@@ -76,7 +81,9 @@ abstract class KitActivity<Binding : ViewBinding> : AppCompatActivity() {
         // as you specify a parent activity in AndroidManifest.xml.
         when (item.itemId) {
             android.R.id.home -> {
-                backClickListener?.let { it() }
+                if(isBackButtonEnabled) {
+                    backClickListener?.let { it() } ?: kotlin.run { finish() }
+                }
             }
             else -> {
             }

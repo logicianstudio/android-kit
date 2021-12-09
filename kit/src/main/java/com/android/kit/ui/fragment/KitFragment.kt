@@ -11,6 +11,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.viewbinding.ViewBinding
 import com.android.kit.contract.ResultContractor
+import com.android.kit.ktx.throwException
+
 abstract class KitFragment<Binding : ViewBinding> : Fragment() {
 
 
@@ -18,7 +20,7 @@ abstract class KitFragment<Binding : ViewBinding> : Fragment() {
 
     // This property is only valid between onCreateView and
     // onDestroyView.
-    protected val binding: Binding get() = _binding!!
+    protected val binding: Binding get() = _binding ?: throwException("detached from activity")
 
     private lateinit var contractForResult: ResultContractor<Intent, ActivityResult>
     private lateinit var contractForPermission: ResultContractor<String, Boolean>

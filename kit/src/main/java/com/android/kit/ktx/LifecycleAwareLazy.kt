@@ -2,20 +2,18 @@ package com.android.kit.ktx
 
 import androidx.annotation.MainThread
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.OnLifecycleEvent
+import androidx.lifecycle.*
 import java.io.Serializable
 
-fun <T> LifecycleOwner.lifecycleAwareLazy(initializer: () -> T): Lazy<T> = LifecycleAwareLazy(this, initializer)
+fun <T> LifecycleOwner.lifecycleAwareLazy(initializer: () -> T): Lazy<T> =
+    LifecycleAwareLazy(this, initializer)
 
 private object UninitializedValue
 
 class LifecycleAwareLazy<out T>(
     private val owner: LifecycleOwner,
     initializer: () -> T
-) : Lazy<T>, Serializable, LifecycleObserver {
+) : Lazy<T>, Serializable, LifecycleEventObserver {
 
     private var initializer: (() -> T)? = initializer
 
@@ -33,12 +31,6 @@ class LifecycleAwareLazy<out T>(
             return _value as T
         }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-    fun resetValue() {
-        _value = UninitializedValue
-        detachFromLifecycle()
-    }
-
     private fun attachToLifecycle() {
         if (getLifecycleOwner().lifecycle.currentState == Lifecycle.State.DESTROYED) {
             throw IllegalStateException("Initialization failed because lifecycle has been destroyed!")
@@ -55,7 +47,20 @@ class LifecycleAwareLazy<out T>(
         else -> owner
     }
 
+    fun resetValue() {
+        _value = UninitializedValue
+        detachFromLifecycle()
+    }
+
     override fun isInitialized(): Boolean = _value !== UninitializedValue
 
-    override fun toString(): String = if (isInitialized()) value.toString() else "Lazy value not initialized yet."
+    override fun toString(): String =
+        if (isInitialized()) value.toString() else "Lazy value not initialized yet."
+
+    override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
+        if (event == Lifecycle.Event.ON_DESTROY) {
+            resetValue()
+        }
+    }
+
 }
