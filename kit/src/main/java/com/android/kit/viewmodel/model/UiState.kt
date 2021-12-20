@@ -8,4 +8,5 @@ open class SuccessUiState<T>(val data: T? = null) : UiState
 
 class ExceptionUiState(val exception: Exception) : UiState {
     constructor(message: String) : this(Exception(message))
+    val localizedMessage get() = exception.localizedMessage
 }

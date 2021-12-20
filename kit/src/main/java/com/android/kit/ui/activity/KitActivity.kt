@@ -15,7 +15,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.viewbinding.ViewBinding
 import com.android.kit.contract.ResultContractor
-import com.android.kit.ktx.LifecycleAwareLazy
 import com.android.kit.ktx.lifecycleAwareLazy
 import com.android.kit.listener.EventListener
 import com.android.kit.model.NightMode
