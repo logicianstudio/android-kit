@@ -14,7 +14,7 @@ import androidx.fragment.app.Fragment
 
 fun hideKeyboard(context: Context, view: View) {
     val imm = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-    imm.showSoftInput(view, InputMethodManager.SHOW_FORCED)
+    imm.hideSoftInputFromWindow(view.windowToken, 0)
 }
 
 fun EditText.showKeyboard() {
