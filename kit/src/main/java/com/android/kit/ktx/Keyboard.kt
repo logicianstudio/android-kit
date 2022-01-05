@@ -2,6 +2,7 @@ package com.android.kit.ktx
 
 import android.app.Activity
 import android.content.Context
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.fragment.app.Fragment
@@ -10,6 +11,11 @@ import androidx.fragment.app.Fragment
  * Created by Mustahsan on 14-Aug-17.
  */
 
+
+fun hideKeyboard(context: Context, view: View) {
+    val imm = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+    imm.showSoftInput(view, InputMethodManager.SHOW_FORCED)
+}
 
 fun EditText.showKeyboard() {
     requestFocus()
@@ -22,21 +28,8 @@ fun EditText.hideKeyboard() {
     imm.hideSoftInputFromWindow(windowToken, 0)
 }
 
-fun Activity.showKeyboard() {
-    val view = currentFocus ?: findViewById(android.R.id.content)
-    val imm = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-    imm.showSoftInput(view, InputMethodManager.SHOW_FORCED)
-}
+fun Activity.hideKeyboard() = hideKeyboard(this, currentFocus ?: findViewById(android.R.id.content))
 
-fun Activity.hideKeyboard() {
-    val view = currentFocus ?: findViewById(android.R.id.content)
-    val imm = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-    imm.hideSoftInputFromWindow(view.windowToken, 0)
-}
-
-fun Fragment.showKeyboard() {
-    activity?.showKeyboard()
-}
 
 fun Fragment.hideKeyboard() {
     activity?.hideKeyboard()
