@@ -4,18 +4,20 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.edit
+import com.android.kit.logD
 import com.android.kit.model.NightMode
 import com.google.gson.Gson
 
+private const val TAG = "KitPreference"
 object KitPreference {
-    private const val PREFERENCE_NAME = "AndroidKit.Preference"
     private const val DARK_MODE = "Pref.DARK_MODE"
 
     private var gson = Gson()
     private lateinit var preference: SharedPreferences
 
-    fun init(context: Context) {
-        preference = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
+    fun init(context: Context, preferenceName: String) {
+        logD(TAG, "init : $preferenceName")
+        preference = context.getSharedPreferences(preferenceName, Context.MODE_PRIVATE)
     }
 
     var nightMode: NightMode

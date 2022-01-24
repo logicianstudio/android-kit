@@ -5,6 +5,7 @@ import android.app.Application
 import android.content.res.Configuration
 import android.os.Bundle
 import com.android.kit.BuildConfig
+import com.android.kit.ktx.appName
 import com.android.kit.logI
 import com.android.kit.preference.KitPreference
 import com.squareup.picasso.Picasso
@@ -23,7 +24,9 @@ abstract class KitApplication : Application(), Application.ActivityLifecycleCall
         super.onCreate()
         registerActivityLifecycleCallbacks(this)
         instance = this
-        KitPreference.init(this)
+
+        val preferenceName = "${appName.lowercase().replace(" ", "_")}.pref"
+        KitPreference.init(this, preferenceName)
 
         if (BuildConfig.DEBUG) {
             with(Picasso.get()) {
