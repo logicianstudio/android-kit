@@ -6,6 +6,7 @@ import androidx.activity.result.ActivityResultCaller
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
+import androidx.core.app.ActivityOptionsCompat
 
 class ResultContractor<Input, Result> private constructor(
     caller: ActivityResultCaller,
@@ -30,6 +31,20 @@ class ResultContractor<Input, Result> private constructor(
             this.onActivityResult = onActivityResult
         }
         launcher.launch(input)
+    }
+    /**
+     * Launch activity, same as [ActivityResultLauncher.launch] except that it allows a callback
+     * executed after receiving a result from the target activity.
+     */
+    /**
+     * Same as [.launch] with last parameter set to `null`.
+     */
+    @JvmOverloads
+    fun launch(input: Input, options: ActivityOptionsCompat, onActivityResult: OnActivityResult<Result>? = this.onActivityResult) {
+        if (onActivityResult != null) {
+            this.onActivityResult = onActivityResult
+        }
+        launcher.launch(input, options)
     }
 
     @JvmOverloads

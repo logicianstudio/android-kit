@@ -10,6 +10,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.ColorRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
@@ -115,6 +116,10 @@ abstract class KitActivity<Binding : ViewBinding> : AppCompatActivity() {
 
     protected fun launchForResult(intent: Intent, result: (result: ActivityResult) -> Unit) {
         contractForResult.launch(intent) { result(it) }
+    }
+
+    protected fun launchForResult(intent: Intent, options: ActivityOptionsCompat, result: (result: ActivityResult) -> Unit) {
+        contractForResult.launch(intent, options) { result(it) }
     }
 
     protected fun requestPermission(permission: String, result: (isGranted: Boolean) -> Unit) {
