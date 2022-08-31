@@ -8,5 +8,6 @@ data class NightMode(
 ){
     companion object{
         val OFF = NightMode()
+        val AUTO = NightMode("AUTO", AppCompatDelegate.MODE_NIGHT_AUTO)
     }
 }

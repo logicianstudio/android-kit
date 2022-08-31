@@ -26,7 +26,7 @@ fun Fragment.getDrawableCompat(@DrawableRes res: Int): Drawable? {
 
 fun Fragment.getDrawableCompat(resName: String): Drawable? {
     return context?.let { safeContext ->
-        val res = safeContext?.getDrawableResource(resName)
+        val res = safeContext.getDrawableResource(resName)
         ContextCompat.getDrawable(safeContext, res)
     }
 }

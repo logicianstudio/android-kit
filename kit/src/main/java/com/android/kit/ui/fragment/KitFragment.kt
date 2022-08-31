@@ -50,10 +50,10 @@ abstract class KitFragment<Binding : ViewBinding> : Fragment() {
         return binding.root
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
+//    override fun onDestroyView() {
+//        super.onDestroyView()
+//        _binding = null
+//    }
 
     protected fun launchForResult(intent: Intent, result: (result: ActivityResult) -> Unit) {
         contractForResult.launch(intent) { result(it) }
