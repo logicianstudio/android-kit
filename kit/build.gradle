@@ -7,10 +7,10 @@ plugins{
 
 android {
 
-    compileSdkVersion 31
+    compileSdkVersion 33
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 31
+        targetSdkVersion 33
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
@@ -41,12 +41,12 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.10"
-    implementation 'androidx.appcompat:appcompat:1.4.2'
+    implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation "androidx.fragment:fragment-ktx:1.5.1"
-    implementation 'androidx.core:core-ktx:1.8.0'
+    implementation "androidx.fragment:fragment-ktx:1.5.2"
+    implementation 'androidx.core:core-ktx:1.9.0'
 
     //Architecture Components
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
@@ -54,7 +54,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.1'
 
     // Billing
-    implementation "com.android.billingclient:billing-ktx:4.1.0"
+    implementation "com.android.billingclient:billing-ktx:5.0.0"
 
     // Live Event
     api "com.github.hadilq.liveevent:liveevent:1.2.0"

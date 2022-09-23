@@ -2,16 +2,23 @@ package com.android.kit.ui.application
 
 import android.app.Activity
 import android.app.Application
+import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
+import android.util.Log
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ProcessLifecycleOwner
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.android.kit.BuildConfig
 import com.android.kit.ktx.appName
+import com.android.kit.logD
 import com.android.kit.logI
 import com.android.kit.preference.KitPreference
 import com.squareup.picasso.Picasso
 
 
-abstract class KitApplication : Application(), Application.ActivityLifecycleCallbacks {
+abstract class KitApplication : Application() {
 
     companion object {
         var instance: KitApplication? = null
@@ -20,11 +27,15 @@ abstract class KitApplication : Application(), Application.ActivityLifecycleCall
     private var activityReferences = 0
     private var isActivityChangingConfigurations = false
 
+    private val lifecycleListener: SampleLifecycleListener by lazy {
+        SampleLifecycleListener()
+    }
+
     override fun onCreate() {
         super.onCreate()
-        registerActivityLifecycleCallbacks(this)
-        instance = this
 
+        instance = this
+        ProcessLifecycleOwner.get().lifecycle.addObserver(lifecycleListener)
         val preferenceName = "${appName.lowercase().replace(" ", "_")}.pref"
         KitPreference.init(this, preferenceName)
 
@@ -37,45 +48,39 @@ abstract class KitApplication : Application(), Application.ActivityLifecycleCall
     }
 
     open fun onPause() {
-        logI("Application in background")
+        logI("onPause")
     }
 
     open fun onResume() {
-        logI("Application in foreground")
+        logI("onResume")
     }
 
-    override fun onActivityCreated(activity: Activity, bundle: Bundle?) {
+    open fun onStart() {
+        logI("onStart")
     }
 
-    override fun onConfigurationChanged(newConfig: Configuration) {
-        super.onConfigurationChanged(newConfig)
+    open fun onStop() {
+        logI("onStop")
     }
 
-    override fun onActivityStarted(activity: Activity) {
-        if (++activityReferences == 1 && !isActivityChangingConfigurations) {
-            // App enters foreground
-            onResume()
+    inner class SampleLifecycleListener : DefaultLifecycleObserver {
+
+        override fun onResume(owner: LifecycleOwner) {
+            this@KitApplication.onResume()
         }
-    }
 
-    override fun onActivityResumed(activity: Activity) {
-    }
-
-    override fun onActivityPaused(activity: Activity) {
-    }
-
-    override fun onActivityStopped(activity: Activity) {
-        isActivityChangingConfigurations = activity.isChangingConfigurations;
-        if (--activityReferences == 0 && !isActivityChangingConfigurations) {
-            // App enters background
-            onPause()
+        override fun onStart(owner: LifecycleOwner) {
+            this@KitApplication.onStart()
         }
-    }
 
-    override fun onActivitySaveInstanceState(activity: Activity, bundle: Bundle) {
-    }
+        override fun onStop(owner: LifecycleOwner) {
+            this@KitApplication.onStop()
+        }
 
-    override fun onActivityDestroyed(activity: Activity) {
+        override fun onPause(owner: LifecycleOwner) {
+            logD("onPause: Moving to background…")
+            this@KitApplication.onPause()
+        }
     }
 
 }

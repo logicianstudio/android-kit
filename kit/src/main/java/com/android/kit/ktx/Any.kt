@@ -5,6 +5,8 @@ import android.os.Looper
 
 fun Any.throwException(message: String): Nothing = throw Exception("${javaClass.simpleName}: $message")
 
-fun Any.postDelayed(delay: Long, task: () -> Unit) {
-    Handler(Looper.getMainLooper()).postDelayed(task, delay)
+fun Any.postDelayed(delay: Long, task: () -> Unit): Handler {
+    val handler = Handler(Looper.getMainLooper())
+    handler.postDelayed(task, delay)
+    return handler
 }

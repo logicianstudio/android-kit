@@ -6,17 +6,20 @@ import android.os.Looper
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.android.kit.viewmodel.model.UiState
 import com.android.kit.viewmodel.model.ExceptionUiState
 import com.android.kit.viewmodel.model.LoadingUiState
-import kotlinx.coroutines.CoroutineExceptionHandler
+import com.android.kit.viewmodel.model.SuccessUiState
+import com.hadilq.liveevent.LiveEvent
+import kotlinx.coroutines.*
 import java.lang.Exception
 
 abstract class KitAndroidViewModel(application: Application) : AndroidViewModel(application) {
 
     private val handler = Handler(Looper.getMainLooper())
 
-    private val _state = MutableLiveData<UiState>()
+    private val _state = LiveEvent<UiState>()
     val state: LiveData<UiState> get() = _state
 
     protected fun emitUIState(state: UiState) {
@@ -33,6 +36,12 @@ abstract class KitAndroidViewModel(application: Application) : AndroidViewModel(
             }, 500)
         }
     }
+
+    protected fun emitSuccess() {
+        emitLoading(isLoading = false)
+        emitUIState(SuccessUiState<Any>())
+    }
+
     protected fun emitError(throwable: Throwable) {
         emitLoading(isLoading = false)
         (throwable as? Exception)?.let { exception ->
@@ -48,8 +57,21 @@ abstract class KitAndroidViewModel(application: Application) : AndroidViewModel(
     protected fun emitError(message: String) {
         emitError(Exception(message))
     }
-    protected open val exceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
+
+    protected open val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
         emitError(throwable)
+    }
+
+    protected fun launchIO(block: suspend () -> Unit) = launch(Dispatchers.IO, block)
+
+    protected fun launchMain(block: suspend () -> Unit) = launch(Dispatchers.Main, block)
+
+    protected fun launch(dispatcher: CoroutineDispatcher, block: suspend () -> Unit) {
+        viewModelScope.launch(dispatcher) {
+            withContext(exceptionHandler) {
+                block()
+            }
+        }
     }
 
 }

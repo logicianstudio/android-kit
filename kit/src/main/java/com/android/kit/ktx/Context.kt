@@ -13,14 +13,18 @@ import android.provider.Settings
 import androidx.core.content.FileProvider
 import androidx.core.net.toUri
 import com.android.kit.BuildConfig
+import com.android.kit.R
+import com.android.kit.alert.toastShort
 import com.android.kit.util.MathUtils
 import java.io.File
 
 
-fun Context.openUri(uri: String, action: String = Intent.ACTION_VIEW) {
+fun Context.openUri(uri: String, action: String = Intent.ACTION_VIEW) = try {
     val intent = Intent(action)
     intent.data = uri.toUri()
     startActivity(intent)
+} catch (e: Exception) {
+    toastShort(R.string.application_not_found)
 }
 
 fun Context.openStore() {

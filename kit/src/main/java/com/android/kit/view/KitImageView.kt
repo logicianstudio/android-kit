@@ -17,8 +17,8 @@ class KitImageView @JvmOverloads constructor(
         fun loadImage(
             imageView: ImageView,
             url: String,
-            errorImageRes: Int = R.drawable.transparent_placeholder,
-            placeholderImageRes: Int = R.drawable.transparent_placeholder
+            errorImageRes: Int = R.drawable.transparent,
+            placeholderImageRes: Int = R.drawable.transparent
         ) {
             Picasso.get()
                 .load(url)
@@ -31,8 +31,8 @@ class KitImageView @JvmOverloads constructor(
     }
 
 
-    private var errorImageRes: Int = R.drawable.transparent_placeholder
-    private var placeholderImageRes: Int = R.drawable.transparent_placeholder
+    private var errorImageRes: Int = R.drawable.transparent
+    private var placeholderImageRes: Int = R.drawable.transparent
 
     var imageUrl: String? = null
         set(value) {
@@ -44,7 +44,7 @@ class KitImageView @JvmOverloads constructor(
                 )
                 logD("Loaded: $url")
             } ?: kotlin.run {
-                setImageResource(R.drawable.transparent_placeholder)
+                setImageResource(R.drawable.transparent)
             }
         }
 
@@ -53,11 +53,11 @@ class KitImageView @JvmOverloads constructor(
             try {
                 placeholderImageRes = getResourceId(
                     R.styleable.KitImageView_placeholderSrc,
-                    R.drawable.transparent_placeholder
+                    R.drawable.transparent
                 )
                 errorImageRes = getResourceId(
                     R.styleable.KitImageView_errorSrc,
-                    R.drawable.transparent_placeholder
+                    R.drawable.transparent
                 )
                 imageUrl = getString(R.styleable.KitImageView_imageUrl)
                 setImageResource(placeholderImageRes)

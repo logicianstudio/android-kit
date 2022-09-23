@@ -3,7 +3,7 @@
     <dimen name="kit_button_height">46dp</dimen>
     <dimen name="kit_button_radius_full">23dp</dimen>
 
-    <dimen name="space_half_half">2dp</dimen>
+    <dimen name="space_quarter">2dp</dimen>
     <dimen name="space_half">4dp</dimen>
     <dimen name="space">8dp</dimen>
     <dimen name="space_and_half">12dp</dimen>

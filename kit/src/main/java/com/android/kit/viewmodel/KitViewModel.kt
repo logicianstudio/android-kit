@@ -56,7 +56,7 @@ abstract class KitViewModel : ViewModel() {
         emitError(Exception(message))
     }
 
-    protected open val exceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
+    protected open val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
         emitError(throwable)
     }
 
