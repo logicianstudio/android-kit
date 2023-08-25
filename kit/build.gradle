@@ -6,6 +6,7 @@ plugins{
 }
 
 android {
+    namespace 'com.android.kit'
 
     compileSdkVersion 33
     defaultConfig {
@@ -40,21 +41,21 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.10"
-    implementation 'androidx.appcompat:appcompat:1.5.1'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.10"
+    implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'androidx.recyclerview:recyclerview:1.2.1'
+    implementation 'androidx.recyclerview:recyclerview:1.3.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation "androidx.fragment:fragment-ktx:1.5.2"
-    implementation 'androidx.core:core-ktx:1.9.0'
+    implementation "androidx.fragment:fragment-ktx:1.6.0"
+    implementation 'androidx.core:core-ktx:1.10.1'
 
     //Architecture Components
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.1'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.6.1'
 
     // Billing
-    implementation "com.android.billingclient:billing-ktx:5.0.0"
+    implementation "com.android.billingclient:billing-ktx:5.1.0"
 
     // Live Event
     api "com.github.hadilq.liveevent:liveevent:1.2.0"
@@ -62,10 +63,10 @@ dependencies {
     // Image
     implementation 'com.squareup.picasso:picasso:2.71828'
 
-    implementation 'com.google.android.material:material:1.6.1'
+    implementation 'com.google.android.material:material:1.9.0'
     testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test:runner:1.4.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    androidTestImplementation 'androidx.test:runner:1.5.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
     implementation 'com.google.code.gson:gson:2.9.0'
 }
 
@@ -74,7 +75,7 @@ repositories {
 }
 
 task androidSourcesJar(type: Jar) {
-    classifier 'sources'
+//    classifier 'sources'
     from android.sourceSets.main.java.srcDirs
 }
 

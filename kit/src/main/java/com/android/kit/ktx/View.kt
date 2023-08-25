@@ -123,13 +123,14 @@ fun View.updateSize(w: Int, h: Int, duration: Long = 700, animate: Boolean = fal
     }
 }
 
-fun View.popupMenu(menuId: Int, callback: (MenuItem) -> Boolean) {
+fun View.popupMenu(menuId: Int, callback: (MenuItem) -> Boolean): PopupMenu {
     val popup = PopupMenu(context, this)
     //Inflating the Popup using xml file
     popup.menuInflater.inflate(menuId, popup.menu)
     //registering popup with OnMenuItemClickListener
     popup.setOnMenuItemClickListener { callback(it) }
     popup.show()//showing popup menu
+    return popup
 }
 
 fun View.setMargin(left: Int, top: Int, right: Int, bottom: Int) {

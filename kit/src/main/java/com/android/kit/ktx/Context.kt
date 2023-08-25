@@ -18,7 +18,6 @@ import com.android.kit.alert.toastShort
 import com.android.kit.util.MathUtils
 import java.io.File
 
-
 fun Context.openUri(uri: String, action: String = Intent.ACTION_VIEW) = try {
     val intent = Intent(action)
     intent.data = uri.toUri()
@@ -30,14 +29,14 @@ fun Context.openUri(uri: String, action: String = Intent.ACTION_VIEW) = try {
 fun Context.openStore() {
     return try {
         startActivity(
-            Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageName"))
+            Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageName")),
         )
     } catch (activityNotFoundException: ActivityNotFoundException) {
         startActivity(
             Intent(
                 Intent.ACTION_VIEW,
-                Uri.parse("https://play.google.com/store/apps/details?id=$packageName")
-            )
+                Uri.parse("https://play.google.com/store/apps/details?id=$packageName"),
+            ),
         )
     }
 }
@@ -112,9 +111,13 @@ val Context.appName: String
     get() {
         val applicationInfo = applicationInfo
         val stringId = applicationInfo.labelRes
-        return if (stringId == 0) applicationInfo.nonLocalizedLabel.toString() else getString(
-            stringId
-        )
+        return if (stringId == 0) {
+            applicationInfo.nonLocalizedLabel.toString()
+        } else {
+            getString(
+                stringId,
+            )
+        }
     }
 
 fun Context.openSettings() {

@@ -37,7 +37,6 @@ abstract class KitActivity<Binding : ViewBinding> : AppCompatActivity() {
     abstract fun onCreateBinding(): Binding
 
     open fun onBindView(binding: Binding) {
-
     }
 
     private var isBackButtonEnabled = false
@@ -47,11 +46,11 @@ abstract class KitActivity<Binding : ViewBinding> : AppCompatActivity() {
         contractForResult = ResultContractor.registerActivityForResult(this)
         contractForPermission = ResultContractor.registerForActivityResult(
             this,
-            ActivityResultContracts.RequestPermission()
+            ActivityResultContracts.RequestPermission(),
         )
         contractForMultiplePermissions = ResultContractor.registerForActivityResult(
             this,
-            ActivityResultContracts.RequestMultiplePermissions()
+            ActivityResultContracts.RequestMultiplePermissions(),
         )
 
         val mode = KitPreference.nightMode
@@ -61,7 +60,7 @@ abstract class KitActivity<Binding : ViewBinding> : AppCompatActivity() {
         if (blockScreenShot) {
             window.setFlags(
                 WindowManager.LayoutParams.FLAG_SECURE,
-                WindowManager.LayoutParams.FLAG_SECURE
+                WindowManager.LayoutParams.FLAG_SECURE,
             )
         }
 
@@ -81,7 +80,7 @@ abstract class KitActivity<Binding : ViewBinding> : AppCompatActivity() {
         // as you specify a parent activity in AndroidManifest.xml.
         when (item.itemId) {
             android.R.id.home -> {
-                if(isBackButtonEnabled) {
+                if (isBackButtonEnabled) {
                     backClickListener?.let { it() } ?: kotlin.run { finish() }
                 }
             }
@@ -98,7 +97,7 @@ abstract class KitActivity<Binding : ViewBinding> : AppCompatActivity() {
                 FilterHelper.setColorFilter(
                     drawable,
                     ContextCompat.getColor(this, color),
-                    FilterHelper.Mode.SRC_ATOP
+                    FilterHelper.Mode.SRC_ATOP,
                 )
             }
         }
@@ -128,7 +127,7 @@ abstract class KitActivity<Binding : ViewBinding> : AppCompatActivity() {
 
     protected fun requestPermission(
         permissions: Array<String>,
-        result: (resultMap: Map<String, Boolean>) -> Unit
+        result: (resultMap: Map<String, Boolean>) -> Unit,
     ) {
         contractForMultiplePermissions.launch(permissions) { result(it) }
     }

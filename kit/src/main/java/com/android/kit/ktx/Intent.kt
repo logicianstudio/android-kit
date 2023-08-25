@@ -9,7 +9,7 @@ inline fun <reified T> Intent.getParcelable(key: String): T? = when {
     else -> @Suppress("DEPRECATION") getParcelableExtra(key) as? T
 }
 
-inline fun <reified T> Bundle.getParcelable(key: String): T? = when {
+inline fun <reified T> Bundle.getParcelableCompat(key: String): T? = when {
     SDK_INT >= 33 -> getParcelable(key, T::class.java)
     else -> @Suppress("DEPRECATION") getParcelable(key) as? T
 }

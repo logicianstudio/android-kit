@@ -5,7 +5,6 @@ import android.os.Handler
 import android.os.Looper
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.android.kit.viewmodel.model.UiState
 import com.android.kit.viewmodel.model.ExceptionUiState
@@ -66,10 +65,12 @@ abstract class KitAndroidViewModel(application: Application) : AndroidViewModel(
 
     protected fun launchMain(block: suspend () -> Unit) = launch(Dispatchers.Main, block)
 
-    protected fun launch(dispatcher: CoroutineDispatcher, block: suspend () -> Unit) {
-        viewModelScope.launch(dispatcher) {
-            withContext(exceptionHandler) {
+    protected fun launch(dispatcher: CoroutineDispatcher, block: suspend () -> Unit): Job {
+        return viewModelScope.launch(dispatcher) {
+            try {
                 block()
+            } catch (e: Exception){
+                emitError(e)
             }
         }
     }

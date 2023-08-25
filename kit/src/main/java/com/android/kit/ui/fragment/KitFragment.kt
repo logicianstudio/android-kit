@@ -16,7 +16,6 @@ import com.android.kit.ktx.throwException
 
 abstract class KitFragment<Binding : ViewBinding> : Fragment() {
 
-
     private var _binding: Binding? = null
 
     // This property is only valid between onCreateView and
@@ -29,15 +28,15 @@ abstract class KitFragment<Binding : ViewBinding> : Fragment() {
 
     abstract fun onCreateBinding(inflater: LayoutInflater, container: ViewGroup?): Binding
 
-    open fun onBindView(binding: Binding){
-
+    open fun onBindView(binding: Binding) {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         contractForResult = ResultContractor.registerActivityForResult(this)
         contractForPermission = ResultContractor.registerForActivityResult(this, ActivityResultContracts.RequestPermission())
-        contractForMultiplePermissions = ResultContractor.registerForActivityResult(this, ActivityResultContracts.RequestMultiplePermissions())
+        contractForMultiplePermissions =
+            ResultContractor.registerForActivityResult(this, ActivityResultContracts.RequestMultiplePermissions())
     }
 
     override fun onCreateView(

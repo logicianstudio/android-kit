@@ -3,7 +3,11 @@ package com.android.kit.util
 import android.content.Context
 import android.content.Context.TELEPHONY_SERVICE
 import android.content.Intent
-import android.content.Intent.*
+import android.content.Intent.ACTION_SENDTO
+import android.content.Intent.EXTRA_EMAIL
+import android.content.Intent.EXTRA_SUBJECT
+import android.content.Intent.EXTRA_TEXT
+import android.content.Intent.createChooser
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
@@ -16,7 +20,7 @@ object FeedbackUtils {
     fun supportEmail(
         context: Context,
         subject: String = emailSubject(context),
-        email: String
+        email: String,
     ) {
         supportEmail(context, subject, arrayOf(email))
     }
@@ -24,13 +28,13 @@ object FeedbackUtils {
     fun supportEmail(
         context: Context,
         subject: String = emailSubject(context),
-        emails: Array<String>
+        emails: Array<String>,
     ) {
         val intent = Intent(ACTION_SENDTO).apply {
             data = Uri.parse("mailto:")
             putExtra(EXTRA_SUBJECT, subject)
             putExtra(EXTRA_EMAIL, emails)
-            putExtra(EXTRA_TEXT, "\n\nDetail Information:\n\n" + getDeviceInfo(context))
+            putExtra(EXTRA_TEXT, "Detail Information:\n\n" + getDeviceInfo(context))
         }
         context.startActivity(createChooser(intent, "Send E-Mail"))
     }
@@ -54,9 +58,13 @@ object FeedbackUtils {
         val applicationInfo = context.applicationInfo
         val stringId = applicationInfo.labelRes
         var appName =
-            if (stringId == 0) applicationInfo.nonLocalizedLabel.toString() else context.getString(
-                stringId
-            )
+            if (stringId == 0) {
+                applicationInfo.nonLocalizedLabel.toString()
+            } else {
+                context.getString(
+                    stringId,
+                )
+            }
         if (appName.isEmpty()) {
             appName = context.getString(R.string.app_name)
         }
@@ -70,29 +78,29 @@ object FeedbackUtils {
         val brand = Build.BRAND // Product
         var infoString = ""
         val locale = getCountryNameWithCode(context)
-        try {
-            val pInfo =
-                context.packageManager.getPackageInfo(context.packageName, 0)
-            val version = pInfo.versionName
-            infoString += "App Version:\t $version\n"
-        } catch (e: PackageManager.NameNotFoundException) {
-            e.printStackTrace()
-        }
-        infoString += "Brand:\t " + brand + " (" + model + ")\n" +
-                "Android API:\t " + sdk + "\nDevice Type: " + getDeviceType(context)
+//        try {
+//            val pInfo =
+//                context.packageManager.getPackageInfo(context.packageName, 0)
+//            val version = pInfo.versionName
+//            infoString += "App Version:\t $version\n"
+//        } catch (e: PackageManager.NameNotFoundException) {
+//            e.printStackTrace()
+//        }
+        infoString += "Android:\t $sdk\n"
+        infoString += "Device:\t $brand ($model), ${getDeviceType(context)}\n"
         if (!locale.isNullOrEmpty()) {
-            infoString += "\nLocale:\t $locale"
+            infoString += "Country:\t $locale\n\n"
         }
         return infoString
     }
 
-    fun getCountryName(context: Context):String?{
+    fun getCountryName(context: Context): String? {
         return getCountryCode(context)?.let { code ->
             Locale("", code).displayCountry
         }
     }
 
-    fun getCountryNameWithCode(context: Context):String?{
+    fun getCountryNameWithCode(context: Context): String? {
         return getCountryCode(context)?.let { code ->
             "${Locale("", code).displayCountry} ($code)"
         }

@@ -59,11 +59,12 @@ fun Any.logWtf(tag: String, message: String) {
     Log.wtf(tag, message)
 }
 
-fun Any.logMethodName(message: String) {
-    val methodName = if (Thread.currentThread().stackTrace.size > 3) {
-        Thread.currentThread().stackTrace[3].methodName
-    } else {
-        ""
-    }
-    logI("$methodName : $message")
+fun methodName(index: Int): String = if (Thread.currentThread().stackTrace.size > index) {
+    Thread.currentThread().stackTrace[index].methodName
+} else {
+    ""
+}
+
+fun Any.logMethodName(index:Int, message: String) {
+    logI("${methodName(index)} : $message")
 }

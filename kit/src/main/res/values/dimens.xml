@@ -13,6 +13,7 @@
     <dimen name="space_triple_and_half">28dp</dimen>
     <dimen name="space_wide">32dp</dimen>
     <dimen name="space_extra_wide">48dp</dimen>
+    <dimen name="space_extra_wide_and_double">64dp</dimen>
 
     <dimen name="radius_small_x">2dp</dimen>
     <dimen name="radius_small">4dp</dimen>

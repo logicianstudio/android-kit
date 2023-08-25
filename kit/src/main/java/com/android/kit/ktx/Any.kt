@@ -10,3 +10,8 @@ fun Any.postDelayed(delay: Long, task: () -> Unit): Handler {
     handler.postDelayed(task, delay)
     return handler
 }
+
+fun Any.ignoreException(block: () -> Unit) = try {
+    block()
+} catch (_: Exception) {
+}

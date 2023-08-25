@@ -31,7 +31,7 @@ abstract class DataBoundRecyclerAdapter<T, V : ViewBinding>() :
 
     fun appendData(data: List<T>) {
         this.data.addAll(data)
-        notifyItemInserted(data.size-1)
+        notifyItemInserted(data.size - 1)
     }
 
     fun clear() {
@@ -43,10 +43,10 @@ abstract class DataBoundRecyclerAdapter<T, V : ViewBinding>() :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataBoundViewHolder<V> {
         var binding = createBinding(parent)
-        if(binding == null){
+        if (binding == null) {
             binding = createBinding(parent, viewType)
         }
-        if(binding == null) throw InstantiationException("Please override createBinding(parent: ViewGroup) OR createBinding(parent: ViewGroup, viewType: Int)")
+        if (binding == null) throw InstantiationException("Please override createBinding(parent: ViewGroup) OR createBinding(parent: ViewGroup, viewType: Int)")
         return DataBoundViewHolder(binding)
     }
 
@@ -79,7 +79,12 @@ abstract class DataBoundRecyclerAdapter<T, V : ViewBinding>() :
     fun getItem(position: Int) = data[position]
 
     fun notifyItemDataChanged(item: T) {
-        notifyItemChanged(data.indexOf(item))
+        val index = data.indexOf(item)
+        if (index >= 0) {
+            notifyItemChanged(index)
+        } else {
+            notifyDataSetChanged()
+        }
     }
 
     fun notifyItemRemoved(item: T) {
@@ -88,7 +93,7 @@ abstract class DataBoundRecyclerAdapter<T, V : ViewBinding>() :
         notifyItemRemoved(index)
     }
 
-    fun setOnItemClickListener(event: ItemClickListener<T>){
+    fun setOnItemClickListener(event: ItemClickListener<T>) {
         simpleItemClickListener = event
     }
 
